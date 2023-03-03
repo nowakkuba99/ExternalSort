@@ -117,86 +117,86 @@ TEST(FileReaderTests,ReadDataToVectorNoData)
 Test fileWriter class 
 --------------------------------------------------------------
 */
-// struct FileWriterTests : public ::testing::Test
-// {
-//   fileWriter outputFile;  //Output file
-//   fileReader inputFile;  //Input file
-//   void SetUp() override
-//   {
-//     outputFile.openFile((const std::string)(path+"/tests/output/output.txt"),fileActions::OVERWRITE);  //Open file
-//   }
+struct FileWriterTests : public ::testing::Test
+{
+  fileWriter outputFile;  //Output file
+  fileReader inputFile;  //Input file
+  void SetUp() override
+  {
+    outputFile.openFile((const std::string)(path+"/tests/output.txt"),fileActions::OVERWRITE);  //Open file
+  }
 
-//   void TearDown() override
-//   {
-//     outputFile.closeFile();   //Close file if not closed
-//     outputFile.removeFile();  //Remove file
-//   }
-// };
+  void TearDown() override
+  {
+    outputFile.closeFile();   //Close file if not closed
+    outputFile.removeFile();  //Remove file
+  }
+};
 
-// // Check writing from vector
-// TEST_F(FileWriterTests,WriteFromVector)
-// {
-//   std::vector<int> testVec, inputVec;
-//   testVec.push_back(10);
-//   testVec.push_back(15);
-//   outputFile.writeFromVector(testVec);
-//   outputFile.closeFile();
-//   inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
-//   auto status = inputFile.readToVector(inputVec,10);
-//   EXPECT_EQ(inputVec.size(),2);  //Correct size
-//   EXPECT_EQ(inputVec[0],10);
-//   EXPECT_EQ(inputVec[1],15);
-//   EXPECT_EQ(status,true); //Read
-// }
-// // Check appending int to file
-// TEST_F(FileWriterTests,AppendIntToFile)
-// {
-//   std::vector<int> testVec, inputVec;
-//   testVec.push_back(10);
-//   testVec.push_back(15);
-//   outputFile.writeFromVector(testVec);
-//   outputFile.closeFile();
-//   inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
-//   auto status = inputFile.readToVector(inputVec,10);
-//   EXPECT_EQ(inputVec.size(),2);  //Correct size
-//   EXPECT_EQ(inputVec[0],10);
-//   EXPECT_EQ(inputVec[1],15);
-//   EXPECT_EQ(status,true);
-//   /* Append value to file */
-//   inputVec.clear();
-//   outputFile.openFile((const std::string)(path+"/tests/output/output.txt"),fileActions::APPEND);
-//   int x = 10;
-//   outputFile.appendValueToFile(&x);
-//   outputFile.closeFile();
-//   inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
-//   status = inputFile.readToVector(inputVec,10);
-//   EXPECT_EQ(inputVec.size(),3);  //Correct size
-//   EXPECT_EQ(inputVec[0],10);
-//   EXPECT_EQ(inputVec[1],15);
-//   EXPECT_EQ(inputVec[2],10);
-//   EXPECT_EQ(status,true); //Read
-// }
-// // Try appending when wrong mode
-// TEST_F(FileWriterTests,AppendWrongMode)
-// {
-//   std::vector<int> testVec, inputVec;
-//   testVec.push_back(10);
-//   testVec.push_back(15);
-//   outputFile.writeFromVector(testVec);
-//   outputFile.closeFile();
-//   inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
-//   auto status = inputFile.readToVector(inputVec,10);
-//   EXPECT_EQ(inputVec.size(),2);  //Correct size
-//   EXPECT_EQ(inputVec[0],10);
-//   EXPECT_EQ(inputVec[1],15);
-//   EXPECT_EQ(status,true);
-//   /* Append value to file */
-//   inputVec.clear();
-//   outputFile.openFile((const std::string)(path+"/tests/output/output.txt"),fileActions::OVERWRITE);
-//   int x = 10;
-//   status = outputFile.appendValueToFile(&x);
-//   EXPECT_EQ(status,false);  //Check if appending not done
-// }
+// Check writing from vector
+TEST_F(FileWriterTests,WriteFromVector)
+{
+  std::vector<int> testVec, inputVec;
+  testVec.push_back(10);
+  testVec.push_back(15);
+  outputFile.writeFromVector(testVec);
+  outputFile.closeFile();
+  inputFile.openFile((const std::string)(path+"/tests/output.txt"));
+  auto status = inputFile.readToVector(inputVec,10);
+  EXPECT_EQ(inputVec.size(),2);  //Correct size
+  EXPECT_EQ(inputVec[0],10);
+  EXPECT_EQ(inputVec[1],15);
+  EXPECT_EQ(status,true); //Read
+}
+// Check appending int to file
+TEST_F(FileWriterTests,AppendIntToFile)
+{
+  std::vector<int> testVec, inputVec;
+  testVec.push_back(10);
+  testVec.push_back(15);
+  outputFile.writeFromVector(testVec);
+  outputFile.closeFile();
+  inputFile.openFile((const std::string)(path+"/tests/output.txt"));
+  auto status = inputFile.readToVector(inputVec,10);
+  EXPECT_EQ(inputVec.size(),2);  //Correct size
+  EXPECT_EQ(inputVec[0],10);
+  EXPECT_EQ(inputVec[1],15);
+  EXPECT_EQ(status,true);
+  /* Append value to file */
+  inputVec.clear();
+  outputFile.openFile((const std::string)(path+"/tests/output.txt"),fileActions::APPEND);
+  int x = 10;
+  outputFile.appendValueToFile(&x);
+  outputFile.closeFile();
+  inputFile.openFile((const std::string)(path+"/tests/output.txt"));
+  status = inputFile.readToVector(inputVec,10);
+  EXPECT_EQ(inputVec.size(),3);  //Correct size
+  EXPECT_EQ(inputVec[0],10);
+  EXPECT_EQ(inputVec[1],15);
+  EXPECT_EQ(inputVec[2],10);
+  EXPECT_EQ(status,true); //Read
+}
+// Try appending when wrong mode
+TEST_F(FileWriterTests,AppendWrongMode)
+{
+  std::vector<int> testVec, inputVec;
+  testVec.push_back(10);
+  testVec.push_back(15);
+  outputFile.writeFromVector(testVec);
+  outputFile.closeFile();
+  inputFile.openFile((const std::string)(path+"/tests/output.txt"));
+  auto status = inputFile.readToVector(inputVec,10);
+  EXPECT_EQ(inputVec.size(),2);  //Correct size
+  EXPECT_EQ(inputVec[0],10);
+  EXPECT_EQ(inputVec[1],15);
+  EXPECT_EQ(status,true);
+  /* Append value to file */
+  inputVec.clear();
+  outputFile.openFile((const std::string)(path+"/tests/output.txt"),fileActions::OVERWRITE);
+  int x = 10;
+  status = outputFile.appendValueToFile(&x);
+  EXPECT_EQ(status,false);  //Check if appending not done
+}
 /* 
 --------------------------------------------------------------
 Test solver elements 
