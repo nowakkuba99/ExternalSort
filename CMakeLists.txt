@@ -6,7 +6,7 @@ set (CMAKE_CXX_STANDARD 14)
 include(CTest)
 enable_testing()
 
-add_subdirectory(testing)
+add_subdirectory(test)
 add_library(readFile src/fileReader.cpp)
 add_library(writeFile src/fileWriter.cpp)
 add_library(solver src/solver.cpp)
