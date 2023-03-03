@@ -16,7 +16,16 @@ bool fileWriter::openFile(const std::string fileName, OPEN_MODE fileOpenMode)
         closeFile();
         fileOpened = false;
     }
-    outputFile.open((const std::string)(PATH + fileName), fileOpenMode);    //Open new file
+    // outputFile.open((const std::string)(PATH + fileName), fileOpenMode);    //Open new file
+
+    // GITHUB ACTIONS FIX
+    if(fileOpenMode == OVERWRITE)
+        outputFile.open((const std::string)(PATH + fileName).c_str(),std::ofstream::out);    //Open new file
+    else if (fileOpenMode == APPEND)
+        outputFile.open((const std::string)(PATH + fileName).c_str(), std::ofstream::app);    //Open new file
+    else if (fileOpenMode == READ)
+        outputFile.open((const std::string)(PATH + fileName).c_str(), std::ofstream::in);    //Open new file
+
     if(outputFile.is_open())
     {
         fileOpened = true;
