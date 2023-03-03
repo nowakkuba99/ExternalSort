@@ -2,7 +2,7 @@
 
 /* User includes */
 #include "solver.hpp"
-
+#include<algorithm>
 solver::solver(const std::string inputFileName)
 {
     inputFileA.openFile(inputFileName);  //Open input file
@@ -23,7 +23,7 @@ bool solver::sortIntoInitialPartitions()
         status = inputFileA.readToVector(tempDataStorage,BLOCK_SIZE); //Read block of data of fixed size
         if(status == errorReportBlock.OK)   //If some data was read
         {
-            std::qsort(tempDataStorage.begin(),tempDataStorage.end());   //Sort the data
+            std::sort(tempDataStorage.begin(),tempDataStorage.end());   //Sort the data
             status = outputFile.openFile((const std::string)("Block"+std::to_string(blockCounter)+".txt"),fileActions::OVERWRITE);  //Open file to save as output
             if(status == errorReportBlock.ERROR)
             {
