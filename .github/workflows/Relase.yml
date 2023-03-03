@@ -1,4 +1,4 @@
-name: github_actions_gtest_example-Release
+name: ExternalSort_GoogleTests
 
 on:
   push:
