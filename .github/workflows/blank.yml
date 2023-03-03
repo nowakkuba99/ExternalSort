@@ -20,4 +20,4 @@ jobs:
     - name: Run Test
       run: cd /home/runner/work/ExternalSort/ExternalSort && ls
     - name: X  
-      run: /home/runner/work/ExternalSort/ExternalSort/build/test/testmodule
+      run: cd /home/runner/work/ExternalSort/ExternalSort/build && ls
