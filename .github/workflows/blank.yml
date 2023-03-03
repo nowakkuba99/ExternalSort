@@ -17,7 +17,7 @@ jobs:
       run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Werror" ..
     - name: make
       run: cd build && make
-    - name: Run Test
+    - name: ls
       run: cd /home/runner/work/ExternalSort/ExternalSort && ls
-    - name: X  
-      run: /home/runner/work/ExternalSort/ExternalSort/build/test/test_module
+    - name: Run Test
+      run: /home/runner/work/ExternalSort/ExternalSort/build/test/test_module "/home/runner/work/ExternalSort/ExternalSort/resources/"
