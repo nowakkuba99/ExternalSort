@@ -16,7 +16,7 @@ bool fileReader::openFile(const std::string fileName, OPEN_MODE fileOpenMode)
         closeFile();
         fileOpened = false;
     }
-    inputFile.open((const std::string)(PATH + fileName), fileOpenMode);    //Open new file
+    inputFile.open((const std::string)(PATH + fileName).c_str(), fileOpenMode);    //Open new file
     if(inputFile.is_open())
     {
         fileOpened = true;
