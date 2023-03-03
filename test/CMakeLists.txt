@@ -1,5 +1,5 @@
 include(FetchContent)
-
+set (CMAKE_CXX_STANDARD 17)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
@@ -18,4 +18,6 @@ target_link_libraries(test_module
   writeFile
   )
 
-add_test(hello_gtests test_module)
+add_test(NAME hello_gtests COMMAND test_module "${CMAKE_CURRENT_LIST_DIR}")
+
+#set_tests_properties(hello_gtests PROPERTIES ENVIRONMENT DATADIR = ${CMAKE_CURRENT_SOURCE_DIR}/tests)

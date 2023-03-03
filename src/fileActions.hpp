@@ -7,7 +7,7 @@
 /* Defines for debug mode */
 //#define DEBUG
 /* Define path where files will be located */
-static const std::string PATH = "../resources/";
+static std::string PATH = "../resources/";
 class fileActions
 {
 public:

@@ -5,6 +5,16 @@
 #include "../src/fileWriter.cpp"
 #include "../src/solver.cpp"
 
+std::string path;
+
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  std::cout<<argv;
+  assert(argc == 2); // gtest leaved unparsed arguments for you
+  PATH = argv[1];
+  return RUN_ALL_TESTS();
+}
+
 /* 
 --------------------------------------------------------------
 Test fileReader class 
@@ -14,7 +24,7 @@ Test fileReader class
 TEST(FileReaderTests, ReadDataInt)
 {
   //Create file reader object
-  fileReader inputFile("/tests/someData.txt");
+  fileReader inputFile((const std::string)(path+"tests/someData.txt"));
   int x;
   auto status = inputFile.readToInt(x);
   EXPECT_EQ(x,10);  //Data read
@@ -24,7 +34,7 @@ TEST(FileReaderTests, ReadDataInt)
 TEST(FileReaderTests, ReadNoDataInt)
 {
   //Create file reader object
-  fileReader inputFile("/tests/noData.txt");
+  fileReader inputFile((const std::string)(path+"/tests/noData.txt"));
   int x = 5;
   auto status = inputFile.readToInt(x);
   EXPECT_EQ(x,5); //Expected no value changed
@@ -33,7 +43,7 @@ TEST(FileReaderTests, ReadNoDataInt)
 TEST(FileReaderTests, DataEndedWhileReading)
 {
   //Create file reader object
-  fileReader inputFile("/tests/someData.txt");
+  fileReader inputFile((const std::string)(path+"/tests/someData.txt"));
   int x;
   auto status = inputFile.readToInt(x);
   EXPECT_EQ(x,10);  //Data read
@@ -52,7 +62,7 @@ TEST(FileReaderTests, DataEndedWhileReading)
 TEST(FileReaderTests,ReadDataToVectorAllDataFit)
 {
   //Create file reader object
-  fileReader inputFile("/tests/someData.txt");
+  fileReader inputFile((const std::string)(path+"/tests/someData.txt"));
   std::vector<int> x;
   auto status = inputFile.readToVector(x,2);
   EXPECT_EQ(x[0],10);  //Data read
@@ -64,7 +74,7 @@ TEST(FileReaderTests,ReadDataToVectorAllDataFit)
 TEST(FileReaderTests,ReadDataToVectorRequestToBig)
 {
   //Create file reader object
-  fileReader inputFile("/tests/someData.txt");
+  fileReader inputFile((const std::string)(path+"/tests/someData.txt"));
   std::vector<int> x;
   auto status = inputFile.readToVector(x,10);
   EXPECT_EQ(x[0],10);  //Data read
@@ -77,7 +87,7 @@ TEST(FileReaderTests,ReadDataToVectorRequestToBig)
 TEST(FileReaderTests,ReadDataToVectorDataEnded)
 {
   //Create file reader object
-  fileReader inputFile("/tests/someData.txt");
+  fileReader inputFile((const std::string)(path+"/tests/someData.txt"));
   std::vector<int> x;
   auto status = inputFile.readToVector(x,2);
   EXPECT_EQ(x[0],10);  //Data read
@@ -96,7 +106,7 @@ TEST(FileReaderTests,ReadDataToVectorDataEnded)
 TEST(FileReaderTests,ReadDataToVectorNoData)
 {
   //Create file reader object
-  fileReader inputFile("/tests/noData.txt");
+  fileReader inputFile((const std::string)(path+"/tests/noData.txt"));
   std::vector<int> x;
   auto status = inputFile.readToVector(x,2);
   EXPECT_EQ(x.size(),0);  //Correct size
@@ -113,7 +123,7 @@ struct FileWriterTests : public ::testing::Test
   fileReader inputFile;  //Input file
   void SetUp() override
   {
-    outputFile.openFile("/tests/output/output.txt",fileActions::OVERWRITE);  //Open file
+    outputFile.openFile((const std::string)(path+"/tests/output/output.txt"),fileActions::OVERWRITE);  //Open file
   }
 
   void TearDown() override
@@ -131,7 +141,7 @@ TEST_F(FileWriterTests,WriteFromVector)
   testVec.push_back(15);
   outputFile.writeFromVector(testVec);
   outputFile.closeFile();
-  inputFile.openFile("/tests/output/output.txt");
+  inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
   auto status = inputFile.readToVector(inputVec,10);
   EXPECT_EQ(inputVec.size(),2);  //Correct size
   EXPECT_EQ(inputVec[0],10);
@@ -146,7 +156,7 @@ TEST_F(FileWriterTests,AppendIntToFile)
   testVec.push_back(15);
   outputFile.writeFromVector(testVec);
   outputFile.closeFile();
-  inputFile.openFile("/tests/output/output.txt");
+  inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
   auto status = inputFile.readToVector(inputVec,10);
   EXPECT_EQ(inputVec.size(),2);  //Correct size
   EXPECT_EQ(inputVec[0],10);
@@ -154,11 +164,11 @@ TEST_F(FileWriterTests,AppendIntToFile)
   EXPECT_EQ(status,true);
   /* Append value to file */
   inputVec.clear();
-  outputFile.openFile("/tests/output/output.txt",fileActions::APPEND);
+  outputFile.openFile((const std::string)(path+"/tests/output/output.txt"),fileActions::APPEND);
   int x = 10;
   outputFile.appendValueToFile(&x);
   outputFile.closeFile();
-  inputFile.openFile("/tests/output/output.txt");
+  inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
   status = inputFile.readToVector(inputVec,10);
   EXPECT_EQ(inputVec.size(),3);  //Correct size
   EXPECT_EQ(inputVec[0],10);
@@ -174,7 +184,7 @@ TEST_F(FileWriterTests,AppendWrongMode)
   testVec.push_back(15);
   outputFile.writeFromVector(testVec);
   outputFile.closeFile();
-  inputFile.openFile("/tests/output/output.txt");
+  inputFile.openFile((const std::string)(path+"/tests/output/output.txt"));
   auto status = inputFile.readToVector(inputVec,10);
   EXPECT_EQ(inputVec.size(),2);  //Correct size
   EXPECT_EQ(inputVec[0],10);
@@ -182,7 +192,7 @@ TEST_F(FileWriterTests,AppendWrongMode)
   EXPECT_EQ(status,true);
   /* Append value to file */
   inputVec.clear();
-  outputFile.openFile("/tests/output/output.txt",fileActions::OVERWRITE);
+  outputFile.openFile((const std::string)(path+"/tests/output/output.txt"),fileActions::OVERWRITE);
   int x = 10;
   status = outputFile.appendValueToFile(&x);
   EXPECT_EQ(status,false);  //Check if appending not done
@@ -195,7 +205,7 @@ Test solver elements
 //Check behaviour of divide for empty file
 TEST(SolverTests,DivideAndSort_emptyFile)
 {
-  solver solveObj("/tests/noData.txt");
+  solver solveObj((const std::string)(path+"/tests/noData.txt"));
   auto status = solveObj.sortIntoInitialPartitions(); //Try sorting
   EXPECT_EQ(status,false);
 }
@@ -205,11 +215,11 @@ TEST(SolverTests,DivideAndSort_2n)
   // BLOCK_SIZE = 2 -> 4 int's inside file
   fileReader inputFileA;  //Input file
   fileReader inputFileB;  //Input file
-  solver solveObj("/tests/input2n.txt");
+  solver solveObj((const std::string)(path+"/tests/input2n.txt"));
   auto status = solveObj.sortIntoInitialPartitions();
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
-  inputFileB.openFile("Block1.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
+  inputFileB.openFile((const std::string)(path+"/Block1.txt"));
   std::vector<int> A,B;
   inputFileA.readToVector(A,10);  //Read and check if sorted properly
   inputFileB.readToVector(B,10);
@@ -231,12 +241,12 @@ TEST(SolverTests,DivideAndSort_2n1)
   fileReader inputFileA;  //Input file
   fileReader inputFileB;  //Input file
   fileReader inputFileC;  //Input file
-  solver solveObj("/tests/input2n_1.txt");
+  solver solveObj((const std::string)(path+"/tests/input2n_1.txt"));
   auto status = solveObj.sortIntoInitialPartitions(); //Divide and sort
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
-  inputFileB.openFile("Block1.txt");
-  inputFileC.openFile("Block2.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
+  inputFileB.openFile((const std::string)(path+"/Block1.txt"));
+  inputFileC.openFile((const std::string)(path+"/Block2.txt"));
   std::vector<int> A,B,C;
   inputFileA.readToVector(A,10);    //Check if sorted properly
   inputFileB.readToVector(B,10);
@@ -263,12 +273,12 @@ TEST(SolverTests,DivideAndSort_AlreadySorted)
   fileReader inputFileA;  //Input file
   fileReader inputFileB;  //Input file
   fileReader inputFileC;  //Input file
-  solver solveObj("/tests/inputSorted.txt");
+  solver solveObj((const std::string)(path+"/tests/inputSorted.txt"));
   auto status = solveObj.sortIntoInitialPartitions(); //Divide and sort
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
-  inputFileB.openFile("Block1.txt");
-  inputFileC.openFile("Block2.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
+  inputFileB.openFile((const std::string)(path+"/Block1.txt"));
+  inputFileC.openFile((const std::string)(path+"/Block2.txt"));
   std::vector<int> A,B,C;
   inputFileA.readToVector(A,10);
   inputFileB.readToVector(B,10);
@@ -296,12 +306,12 @@ TEST(SolverTests,DivideAndSort_AlreadySortedNonAscending)
   fileReader inputFileA;  //Input file
   fileReader inputFileB;  //Input file
   fileReader inputFileC;  //Input file
-  solver solveObj("/tests/inputSortedNonAscending.txt");
+  solver solveObj((const std::string)(path+"/tests/inputSortedNonAscending.txt"));
   auto status = solveObj.sortIntoInitialPartitions(); //Divide and sort
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
-  inputFileB.openFile("Block1.txt");
-  inputFileC.openFile("Block2.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
+  inputFileB.openFile((const std::string)(path+"/Block1.txt"));
+  inputFileC.openFile((const std::string)(path+"/Block2.txt"));
   std::vector<int> A,B,C;
   inputFileA.readToVector(A,10);
   inputFileB.readToVector(B,10);
@@ -328,11 +338,11 @@ TEST(SolverTests,Merge2Blocks_BLOCKSIZE)
   /* Preparation - create 2 files */
   fileReader inputFileA;  //Input file
   fileReader inputFileB;  //Input file
-  solver solveObj("/tests/input2n.txt");
+  solver solveObj((const std::string)(path+"/tests/input2n.txt"));
   auto status = solveObj.sortIntoInitialPartitions();
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
-  inputFileB.openFile("Block1.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
+  inputFileB.openFile((const std::string)(path+"/Block1.txt"));
   std::vector<int> A,B;
   inputFileA.readToVector(A,10);
   inputFileB.readToVector(B,10);
@@ -347,7 +357,7 @@ TEST(SolverTests,Merge2Blocks_BLOCKSIZE)
   /* Merge files */
   status = solveObj.mergeSortedBlocks();
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   A.clear();
   inputFileA.readToVector(A,10);
   ASSERT_EQ(A.size(),4);
@@ -366,13 +376,13 @@ TEST(SolverTests,Merge3Blocks_BLOCKSIZE)
   fileReader inputFileA;  //Input file
   fileReader inputFileB;  //Input file
   fileReader inputFileC;  //Input file
-  solver solveObj("/tests/inputSortedNonAscending.txt");
+  solver solveObj((const std::string)(path+"/tests/inputSortedNonAscending.txt"));
   auto status = solveObj.sortIntoInitialPartitions();
   EXPECT_EQ(status,true);
   /* Merge files */
   status = solveObj.mergeSortedBlocks();
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,10);
   ASSERT_EQ(A.size(),6);
@@ -391,7 +401,7 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE)
 {
   /* Preparation */
   fileWriter outputFile;
-  outputFile.openFile("Block0.txt",fileActions::OVERWRITE);
+  outputFile.openFile((const std::string)(path+"/Block0.txt"),fileActions::OVERWRITE);
   std::vector<int> testVec;
   testVec.push_back(2);
   testVec.push_back(10);
@@ -405,7 +415,7 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE)
   testVec.push_back(90);
   outputFile.writeFromVector(testVec);
   outputFile.closeFile();
-  outputFile.openFile("Block1.txt",fileActions::OVERWRITE);
+  outputFile.openFile((const std::string)(path+"/Block1.txt"),fileActions::OVERWRITE);
   testVec.clear();
   testVec.push_back(1);
   testVec.push_back(30);
@@ -421,11 +431,11 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE)
   outputFile.closeFile();
   /* Merge files */
   fileReader inputFileA;  //Input file
-  solver solveObj("/tests/inputSortedNonAscending.txt");
+  solver solveObj((const std::string)(path+"/tests/inputSortedNonAscending.txt"));
   solveObj.testSetNumberOfBlocks(2);
   auto status = solveObj.mergeSortedBlocks();
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,100); //check if correct size
   ASSERT_EQ(A.size(),20); 
@@ -445,7 +455,7 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE_andSomeData)
   /* Preparation */
     /* Preparation */
   fileWriter outputFile;
-  outputFile.openFile("Block0.txt",fileActions::OVERWRITE);
+  outputFile.openFile((const std::string)(path+"/Block0.txt"),fileActions::OVERWRITE);
   std::vector<int> testVec;
   testVec.push_back(2);
   testVec.push_back(10);
@@ -459,7 +469,7 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE_andSomeData)
   testVec.push_back(90);
   outputFile.writeFromVector(testVec);
   outputFile.closeFile();
-  outputFile.openFile("Block1.txt",fileActions::OVERWRITE);
+  outputFile.openFile((const std::string)(path+"/Block1.txt"),fileActions::OVERWRITE);
   testVec.clear();
   testVec.push_back(1);
   testVec.push_back(30);
@@ -473,7 +483,7 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE_andSomeData)
   testVec.push_back(100);
   outputFile.writeFromVector(testVec);
   outputFile.closeFile();
-  outputFile.openFile("Block2.txt",fileActions::OVERWRITE);
+  outputFile.openFile((const std::string)(path+"/Block2.txt"),fileActions::OVERWRITE);
   testVec.clear();
   testVec.push_back(9);
   testVec.push_back(26);
@@ -483,11 +493,11 @@ TEST(SolverTests,Merge2Blocks_10xBLOCKSIZE_andSomeData)
   outputFile.closeFile();
   /* Merge files */
   fileReader inputFileA;  //Input file
-  solver solveObj("/tests/inputSortedNonAscending.txt");
+  solver solveObj((const std::string)(path+"/tests/inputSortedNonAscending.txt"));
   solveObj.testSetNumberOfBlocks(3);
   auto status = solveObj.mergeSortedBlocks();   
   EXPECT_EQ(status,true);
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,100); //Check if correct size
   ASSERT_EQ(A.size(),24);
@@ -510,13 +520,13 @@ Check solving whole problem
 TEST(AppTests,InputEqualBLOCKSIZE)
 {
   /* Solve */
-  solver solverObj("/tests/input2n.txt");
+  solver solverObj((const std::string)(path+"/tests/input2n.txt"));
   auto status = solverObj.sortIntoInitialPartitions();  //Divide and sort
   EXPECT_EQ(status,true);
   status = solverObj.mergeSortedBlocks();    //Merge
   EXPECT_EQ(status,true);
   fileReader inputFileA;  //Input file
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,100);
   ASSERT_EQ(A.size(),4);  //Check proper size
@@ -533,13 +543,13 @@ TEST(AppTests,InputEqualBLOCKSIZE)
 //Input file size == 10*BLOCKSIZE random
 TEST(AppTests,Input_10x_BLOCKSIZE)
 {
-  solver solverObj("/tests/input10BLOCK_SIZE.txt");
+  solver solverObj((const std::string)(path+"/tests/input10BLOCK_SIZE.txt"));
   auto status = solverObj.sortIntoInitialPartitions();  //Divide and sort
   EXPECT_EQ(status,true);
   status = solverObj.mergeSortedBlocks();    //Merge
   EXPECT_EQ(status,true);
   fileReader inputFileA;  //Input file
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,100);
   ASSERT_EQ(A.size(),20);   //Check correct size
@@ -556,13 +566,13 @@ TEST(AppTests,Input_10x_BLOCKSIZE)
 //Input file size == 10*BLOCKSIZE sorted ascending
 TEST(AppTests,Input_10x_BLOCKSIZE_ascending)
 {
-  solver solverObj("/tests/input10BLOCK_SIZE_Sorted.txt");
+  solver solverObj((const std::string)(path+"/tests/input10BLOCK_SIZE_Sorted.txt"));
   auto status = solverObj.sortIntoInitialPartitions();  //Divide and sort
   EXPECT_EQ(status,true);
   status = solverObj.mergeSortedBlocks();    //Merge
   EXPECT_EQ(status,true);
   fileReader inputFileA;  //Input file
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,100);
   ASSERT_EQ(A.size(),20);   //Check correct size
@@ -579,13 +589,13 @@ TEST(AppTests,Input_10x_BLOCKSIZE_ascending)
 //Input file size == 10*BLOCKSIZE sorted nonascending
 TEST(AppTests,Input_10x_BLOCKSIZE_nonascending)
 {
-  solver solverObj("/tests/input10BLOCK_SIZE_SoretdDescending.txt");
+  solver solverObj((const std::string)(path+"/tests/input10BLOCK_SIZE_SoretdDescending.txt"));
   auto status = solverObj.sortIntoInitialPartitions();  //Divide and sort
   EXPECT_EQ(status,true);
   status = solverObj.mergeSortedBlocks();    //Merge
   EXPECT_EQ(status,true);
   fileReader inputFileA;  //Input file
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,100);
   ASSERT_EQ(A.size(),20);   //Check size
@@ -602,13 +612,13 @@ TEST(AppTests,Input_10x_BLOCKSIZE_nonascending)
 //Input file size == 9999 ints -> random
 TEST(AppTests,Input_9999)
 {
-  solver solverObj("/tests/input_9999.txt");
+  solver solverObj((const std::string)(path+"/tests/input_9999.txt"));
   auto status = solverObj.sortIntoInitialPartitions();  //Divide and sort
   EXPECT_EQ(status,true);
   status = solverObj.mergeSortedBlocks();    //Merge
   EXPECT_EQ(status,true);
   fileReader inputFileA;  //Input file
-  inputFileA.openFile("Block0.txt");
+  inputFileA.openFile((const std::string)(path+"/Block0.txt"));
   std::vector<int> A;
   inputFileA.readToVector(A,10000);
   ASSERT_EQ(A.size(),9999);   //Check if correct size
