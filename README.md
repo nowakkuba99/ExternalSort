@@ -12,4 +12,6 @@ Also included is a big amount of [tests](https://github.com/nowakkuba99/External
 ![Wikipedia](https://img.shields.io/badge/Wikipedia-%23000000.svg?style=for-the-badge&logo=wikipedia&logoColor=white)
 
 >External sorting is a class of sorting algorithms that can handle massive amounts of data.    
->External sorting is required when the data being sorted do not fit into the main memory of a computing device (usually RAM) and instead they must reside in the slower external memory, usually a disk drive.
+>External sorting is required when the data being sorted do not fit into the main memory of a computing device (usually RAM) and instead they must reside in the slower external memory, usually a disk drive - [more information](https://en.wikipedia.org/wiki/External_sorting).
+
+Implemented in this project is an **External Merge Sort** model that sorts chunks that each fit in RAM, then merges the sorted chunks together.
