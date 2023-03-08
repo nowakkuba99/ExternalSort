@@ -7,6 +7,11 @@
 </h1>
 
 # ExternalSort
-External sorting algorithm build in C++
-## GitHub actions Googletest support
-Problem with writing in github workflow
+This project contains of **External Sorting Algorithm** build in C++ with standard library and fstream operations.   
+Also included is a big amount of [tests](https://github.com/nowakkuba99/ExternalSort/blob/main/test/tests.cc) build using **[Google Test](https://github.com/google/googletest)** framework that are integrated within [GitHub Actions](https://github.com/features/actions).
+
+
+![Wikipedia](https://img.shields.io/badge/Wikipedia-%23000000.svg?style=for-the-badge&logo=wikipedia&logoColor=white)
+
+>External sorting is a class of sorting algorithms that can handle massive amounts of data.    
+>External sorting is required when the data being sorted do not fit into the main memory of a computing device (usually RAM) and instead they must reside in the slower external memory, usually a disk drive.
