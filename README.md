@@ -5,7 +5,7 @@
 </h1>
 
 # ExternalSort
-## Brief indtroduction
+## Brief introduction
 This project contains of **External Sorting Algorithm** build in C++ with standard library and fstream operations.   
 Also included is a big amount of [tests](https://github.com/nowakkuba99/ExternalSort/blob/main/test/tests.cc) build using **[Google Test](https://github.com/google/googletest)** framework that are integrated within [GitHub Actions](https://github.com/features/actions).
 
